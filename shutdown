@@ -1,0 +1,53 @@
+from tkinter import *
+import os
+import platform
+import tkinter.ttk as ttk
+
+def perform_action(action):
+    system = platform.system()
+
+    if system == "Windows":
+        if action == "Shutdown":
+            os.system("shutdown /s /t 0")
+        elif action == "Restart":
+            os.system("shutdown /r /t 0")
+        elif action == "Logout":
+            os.system("shutdown /l")
+
+def on_button_click():
+    selected_action = dropdown_var.get()
+    if selected_action:
+        perform_action(selected_action)
+
+root = Tk()
+root.title("Shutdown, Restart, and Logout")
+root.geometry("400x300")
+
+style = ttk.Style()
+style.configure("TButton", font=("Helvetica", 14))
+
+frame = Frame(root)
+frame.pack(expand=True)
+
+options = ["Shutdown", "Restart", "Logout"]
+dropdown_var = StringVar(root)
+dropdown_var.set(options[0])
+dropdown = OptionMenu(frame, dropdown_var, *options)
+dropdown.config(width=10, font=("Helvetica", 16), bg="darkorange")
+dropdown.grid(row=0, column=0, padx=20, pady=20)
+
+button = Button(frame, text="Perform Action", command=on_button_click)
+button.config(width=15, font=("Helvetica", 14), bg="darkblue",fg="white") 
+button.grid(row=1, column=0, pady=10)
+
+frame.update_idletasks()
+frame_width = frame.winfo_width()
+frame_height = frame.winfo_height()
+x_pos = (root.winfo_screenwidth() - frame_width) // 2
+y_pos = (root.winfo_screenheight() - frame_height) // 2
+root.geometry(f"{frame_width}x{frame_height}+{x_pos}+{y_pos}")
+
+root.configure(bg="lightgray")
+frame.configure(bg="lightgray")
+
+root.mainloop()
